@@ -6,10 +6,14 @@
 #
 # [*records*]
 #   a hash of dns records you wish to add
-#
+# [*defaults*]
+#   a hash of default parameters you wish to add
+
 
 class bindrecords (
-  $records = undef,
-) {
-create_resources(dns_rr, $records)
+        Optional[Hash] $records = undef, 
+        Optional[Hash] $defaults = undef
+) 
+{
+        create_resources(dns_rr, deep_merge($records, hiera_hash('bindrecords::dnsrecords')), deep_merge($defaults, hiera_hash('bindrecords::defaults')))
 }
