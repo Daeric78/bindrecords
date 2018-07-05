@@ -1,15 +1,36 @@
 bindrecords
 ====
 
-[![Build
-Status](https://secure.travis-ci.org/lesaux/puppet-bind-records.png)](http://travis-ci.org/lesaux/puppet-bind-records)
-
 ## Description
 nsupdate dns records with puppet
 
 
 Overview
 --------
+
+Usage:
+
+Add
+```
+        class { 'bindrecords':}
+```
+to manifest
+
+
+
+Add following to hieradata:
+
+Configure Defaults
+```
+bindrecords::defaults:
+        keyname: 'rndc-key'
+        hmac: 'hmac-md5'
+        secret: '----secretkey----'
+        ttl: 86400 
+        server: 127.0.0.1
+        ensure: present 
+```
+
 
 Use a hash to maintain records:
 ```
@@ -20,9 +41,6 @@ IN/CNAME/www.example.com:
   ttl: 86400
   zone: example.com
   server: ns.example.com
-  keyname: rndc-key
-  hmac: hmac-md5
-  secret: yoursecretkey
 IN/A/server.example.com:
   ensure: present
   rrdata:
@@ -31,17 +49,7 @@ IN/A/server.example.com:
   purge: false
   zone: example.com
   server: ns.example.com
-  keyname: rndc-key
-  hmac: hmac-md5
-  secret: yoursecretkey
 IN/PTR/1.0.168.192.in-addr.arpa:
-  ensure: present
   rrdata:
   - server.example.com.
-  ttl: 86400
-  zone: 0.168.192.in-addr.arpa
-  server: ns.example.com
-  keyname: rndc-key
-  hmac: hmac-md5
-  secret: yoursecretkey
 ```
